@@ -1,5 +1,6 @@
 #pragma once
 #include <eloimx/eloimx.h>
+#include <math.h>
 
 ELX_NAMESPACE_BEGIN
 
@@ -8,6 +9,13 @@ class elxRenderJob {
     char *color;
 
     elxRenderJob() { };
+    float gamma(float x) const {
+        if (x <= 0.0031308)
+            return 12.92 * x;
+        else {
+            return 1.055 * std::pow(x, 0.4167) - 0.055;
+        }
+    }
 public:
     unsigned height, width;
     unsigned spp;
@@ -22,9 +30,10 @@ public:
     }
 
     inline void setPixel(unsigned x, unsigned y, const elxSpectrum &spc) {
-        color[x * 3 + y * width * 3]     = (char) (spc.r * 255);
-        color[x * 3 + y * width * 3 + 1] = (char) (spc.g * 255);
-        color[x * 3 + y * width * 3 + 2] = (char) (spc.b * 255);
+
+        color[x * 3 + y * width * 3]     = (char) (std::sqrt(spc.r) * 255);
+        color[x * 3 + y * width * 3 + 1] = (char) (std::sqrt(spc.g) * 255);
+        color[x * 3 + y * width * 3 + 2] = (char) (std::sqrt(spc.b) * 255);
     }    
 
     void writeTga() const;

@@ -20,7 +20,7 @@ void test() {
     }
     */
 #ifdef INTEGRATE_DEBUG
-    elxRenderJob job("cornellBox_200spp_10maxPath_Dielectricsphere5.tga", 400, 400, 200);
+    elxRenderJob job("cornellBox_200spp_10maxPath_gamma_Dielectricsphere.tga", 400, 400, 200);
     elxMCIntegrator *integrator = new elxPathTracer(10, 1, true, false);
     elxCameraInterface *sensor = new elxPerspectiveCamera();
     RTCDevice device = rtcNewDevice(nullptr);
