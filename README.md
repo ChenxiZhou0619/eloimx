@@ -11,3 +11,5 @@ Add gamma correction
 ## 2022.3.18
 Currently support
 -   bsdf : conductor、dieletric
+-   texture : bitmap(with out mipmap)
+next: microfacet model

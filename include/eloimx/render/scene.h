@@ -67,6 +67,9 @@ public:
 
             its.shFrame = its.geoFrame = elxFrame(geoNormal);
             its.wi = its.shFrame.toLocal(-ray.d);
+            its.uv = its.shape->getUV(its.p);
+            // no ray differentials currently
+            its.haveUVPartials = false;
         }
         return true;
     }

@@ -97,6 +97,11 @@ Vec3f elxTriangle::getNormal(const elxRay &ray, const Point3f &hit, const Vec3f 
     else return nDir;
 }
 
+Point2f elxTriangle::getUV(const Point3f &hit) const {
+    std::cout<<"Triangle has not implemented the getUV\n";
+    return Point2f(.0f);
+} 
+
 std::string elxTriangle::toString() const {
     float* vertices = (float *)rtcGetGeometryBufferData(shapePtr, RTC_BUFFER_TYPE_VERTEX, 0);
     std::string bsdfDes     = (bsdf==nullptr)?"No bsdf":bsdf->toString();
@@ -154,7 +159,7 @@ elxRectangle::elxRectangle(RTCDevice device,
 
 void elxRectangle::samplePosition(elxDirectSamplingRecord &dRec, const Point2f &sample) const {
     Point2f uv = sample;
-    float *vertices = (float *)(float *)rtcGetGeometryBufferData(shapePtr, RTC_BUFFER_TYPE_VERTEX, 0);
+    float *vertices = (float *)rtcGetGeometryBufferData(shapePtr, RTC_BUFFER_TYPE_VERTEX, 0);
     Point3f vertex(vertices[0], vertices[1], vertices[2]);
     Vec3f v1(vertices[3]-vertices[0], vertices[4]-vertices[1], vertices[5]-vertices[2]);
     Vec3f v2(vertices[9]-vertices[0], vertices[10]-vertices[1], vertices[11]-vertices[2]);
@@ -192,6 +197,25 @@ Vec3f elxRectangle::getNormal(const elxRay &ray, const Point3f &hit, const Vec3f
         return -nDir;
     else return nDir;
 }   
+
+Point2f elxRectangle::getUV(const Point3f &hit) const {
+    float *vertices = (float *)rtcGetGeometryBufferData(shapePtr, RTC_BUFFER_TYPE_VERTEX, 0);
+    // vertices[0],[1],[2]   -> point0
+    // vertices[3],[4],[5]   -> point1
+    // vertices[9],[10],[11] -> point3
+    Point3f p0(vertices[0], vertices[1], vertices[2]),
+            p1(vertices[3], vertices[4], vertices[5]),
+            p3(vertices[9], vertices[10], vertices[11]);
+
+    Vec3f v0 = p1 - p0,
+          v1 = p3 - p0,
+          p0hit = hit - p0;
+
+    // p0hit = u * v0 + v * v1
+    float v = glm::dot(p0hit, v1) / (vecLen(v1) * vecLen(v1)),
+          u = glm::dot(p0hit, v0) / (vecLen(v0) * vecLen(v0));
+    return Point2f(u,v);
+}
 
 std::string elxRectangle::toString() const {
     float* vertices = (float *)rtcGetGeometryBufferData(shapePtr, RTC_BUFFER_TYPE_VERTEX, 0);
@@ -354,6 +378,11 @@ float elxSphere::area() const {
 Vec3f elxSphere::getNormal(const elxRay &ray, const Point3f &hit, const Vec3f &nDir) const {
     // just return the hit - center
     return hit - center;
+}
+
+Point2f elxSphere::getUV(const Point3f &hit) const {
+    //std::cout<<"Sphere has not implemented the getUV\n";
+    return Point2f(.0f);
 }
 
 //todo

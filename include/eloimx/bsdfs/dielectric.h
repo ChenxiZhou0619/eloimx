@@ -5,8 +5,8 @@
 ELX_NAMESPACE_BEGIN
 
 class elxDielectric : public elxBSDF {
-    elxSpectrum m_specularReflectance;
-    elxSpectrum m_specularTransmittance;
+    elxTexture *m_specularReflectance;
+    elxTexture *m_specularTransmittance;
     
     float m_eta;
 
@@ -18,8 +18,8 @@ protected:
 
     Vec3f refract(const Vec3f &wi, float cosThetaT) const;
 public:
-    elxDielectric(const elxSpectrum &reflectance, 
-        const elxSpectrum &transmittance, 
+    elxDielectric(elxTexture *reflectance, 
+        elxTexture *transmittance,
         float eta) : 
         m_specularReflectance(reflectance), m_specularTransmittance(transmittance), m_eta(eta) { }
 

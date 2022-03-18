@@ -11,7 +11,7 @@ cmake_minimum_required(VERSION 3.23)
 #target_link_directories(librender PUBLIC "..\\lib")
 #target_link_libraries(librender fmt embree3 libcore)
 
-add_library(liball ./integrators/path.cpp ./libcore/frame.cpp ./libcore/math.cpp ./libcore/ray.cpp ./librender/integrator.cpp ./librender/perspective.cpp ./librender/renderjob.cpp ./librender/shape.cpp ./librender/intersection.cpp ./bsdfs/diffuse.cpp ./librender/emitter.cpp ./libcore/spectrum.cpp ./librender/common.cpp ./librender/sampler.cpp ./librender/scene.cpp ./libcore/warp.cpp ./libcore/util.cpp ./bsdfs/dielectric.cpp ./bsdfs/mirror.cpp ./bsdfs/conductor.cpp)
+add_library(liball ./integrators/path.cpp ./libcore/frame.cpp ./libcore/math.cpp ./libcore/ray.cpp ./librender/integrator.cpp ./librender/perspective.cpp ./librender/renderjob.cpp ./librender/shape.cpp ./librender/intersection.cpp ./bsdfs/diffuse.cpp ./librender/emitter.cpp ./libcore/spectrum.cpp ./librender/common.cpp ./librender/sampler.cpp ./librender/scene.cpp ./libcore/warp.cpp ./libcore/util.cpp ./bsdfs/dielectric.cpp ./bsdfs/mirror.cpp ./bsdfs/conductor.cpp ./texture/bitmap.cpp ./texture/constmap.cpp)
 target_include_directories(liball PUBLIC "..\\include")
 target_link_directories(liball PUBLIC "..\\lib")
 target_link_libraries(liball fmt embree3)

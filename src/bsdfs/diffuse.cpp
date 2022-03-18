@@ -10,7 +10,7 @@ elxSpectrum elxDiffuse::sample(elxBSDFSamplingRecord &bRec, const Point2f &sampl
         return elxSpectrum(.0f);
     }
     //bRec.wo
-    return color;
+    return m_diffuseReflectance->eval(*bRec.itsPtr, true);
 }
 // todo
 elxSpectrum elxDiffuse::sample(elxBSDFSamplingRecord &bRec, const Point2f &sample, float &pdf) const {
@@ -20,7 +20,7 @@ elxSpectrum elxDiffuse::sample(elxBSDFSamplingRecord &bRec, const Point2f &sampl
     bRec.wo = warp::squareToCosHemisphere(sample);
     bRec.eta = 1.0f;
     pdf = warp::squareToCosHemispherePdf(bRec.wo);
-    return color;
+    return m_diffuseReflectance->eval(*bRec.itsPtr, true);
 }
 // todo
 elxSpectrum elxDiffuse::eval(const elxBSDFSamplingRecord &bRec) const {
@@ -28,8 +28,7 @@ elxSpectrum elxDiffuse::eval(const elxBSDFSamplingRecord &bRec) const {
         elxFrame::cosTheta(bRec.wo) <= 0) {
         return elxSpectrum(.0f);
     }
-
-    return color * (INV_PI * elxFrame::cosTheta(bRec.wo));
+    return m_diffuseReflectance->eval(*bRec.itsPtr, true) * (INV_PI * elxFrame::cosTheta(bRec.wo));
 }
 // todo
 float elxDiffuse::pdf(const elxBSDFSamplingRecord &bRec) const {
@@ -41,8 +40,8 @@ float elxDiffuse::pdf(const elxBSDFSamplingRecord &bRec) const {
 }
 
 std::string elxDiffuse::toString() const {
-    return fmt::format("Here is a constant diffuse, which color is [{}, {}, {}]",
-        color.r, color.g, color.b);
+    return fmt::format("Here is a diffuse, whose texture is {}",
+        m_diffuseReflectance->toString());
 }
 
 ELX_NAMESPACE_END

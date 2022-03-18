@@ -2,6 +2,7 @@
 #include <eloimx/eloimx.h>
 #include <eloimx/render/intersection.h>
 #include <eloimx/render/sampler.h>
+#include <eloimx/render/texture.h>
 
 ELX_NAMESPACE_BEGIN
 
@@ -43,6 +44,7 @@ public:
 
     //virtual float getEta() const;
     virtual std::string toString() const = 0;
+
 protected:
     elxBSDF() { }
 };

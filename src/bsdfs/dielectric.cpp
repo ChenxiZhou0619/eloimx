@@ -38,7 +38,7 @@ elxSpectrum elxDielectric::sample(elxBSDFSamplingRecord &bRec, const Point2f &sa
         bRec.eta = 1.f;
         pdf = F;
 
-        return m_specularReflectance;
+        return m_specularReflectance->eval(*bRec.itsPtr, true);
     } else {
 
         bRec.wo = refract(bRec.wi, cosThetaT);
@@ -54,7 +54,7 @@ elxSpectrum elxDielectric::sample(elxBSDFSamplingRecord &bRec, const Point2f &sa
             that occurs when corssing the interface 
             PBRT p526 */
         float factor = (cosThetaT < 0) ? (1.0f/m_eta) : m_eta;
-        return m_specularTransmittance * (factor * factor);
+        return m_specularTransmittance->eval(*bRec.itsPtr, true) * (factor * factor);
     }
     return elxSpectrum(.0f);
 }
@@ -66,14 +66,14 @@ elxSpectrum elxDielectric::eval(const elxBSDFSamplingRecord &bRec) const {
     if (elxFrame::cosTheta(bRec.wi) * elxFrame::cosTheta(bRec.wo) >= 0) {
         if (std::abs(glm::dot(reflect(bRec.wi), bRec.wo)-1) > Epsilon)
             return elxSpectrum(.0f);
-        return m_specularReflectance * F;
+        return m_specularReflectance->eval(*bRec.itsPtr, true) * F;
     } else {
         if (std::abs(glm::dot(refract(bRec.wi, cosThetaT), bRec.wo)-1) > Epsilon)
             return elxSpectrum(.0f);
         
         float factor = (cosThetaT < 0) ? (1.0f/m_eta) : m_eta;
         
-        return m_specularTransmittance * factor * factor * (1 - F); 
+        return m_specularTransmittance->eval(*bRec.itsPtr, true) * factor * factor * (1 - F); 
     }
 }
 
@@ -96,9 +96,9 @@ float elxDielectric::pdf(const elxBSDFSamplingRecord &bRec) const {
 }
 
 std::string elxDielectric::toString() const {
-    return fmt::format("Here is a dielectric:\n specularReflectance[{}, {}, {}]\n transmittanceReflectance[{}, {}, {}]\n eta={}",
-        m_specularReflectance.r, m_specularReflectance.g, m_specularReflectance.b,
-        m_specularTransmittance.r, m_specularTransmittance.g, m_specularTransmittance.b,
+    return fmt::format("Here is a dielectric:\n specularReflectance is {}\n transmittanceReflectance is {}\n eta={}",
+        m_specularReflectance->toString(),
+        m_specularTransmittance->toString(),
         m_eta);
 }
 

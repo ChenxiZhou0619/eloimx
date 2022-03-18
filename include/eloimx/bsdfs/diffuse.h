@@ -4,12 +4,12 @@
 
 ELX_NAMESPACE_BEGIN
 class elxDiffuse : public elxBSDF {
-    // hack, should be texture
-    elxSpectrum color;
-    
-    elxDiffuse() { }
+
+    elxDiffuse() : m_diffuseReflectance(nullptr) { }
+protected:
+    elxTexture *m_diffuseReflectance;
 public:
-    elxDiffuse(const elxSpectrum &spc) : color(spc) { }
+    elxDiffuse(elxTexture *texture) : m_diffuseReflectance(texture) { }
 
     virtual elxSpectrum sample(elxBSDFSamplingRecord &bRec, const Point2f &sample) const;
 

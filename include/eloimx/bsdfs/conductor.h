@@ -6,7 +6,7 @@ ELX_NAMESPACE_BEGIN
 
 class elxConductor : public elxBSDF {
     
-    elxSpectrum m_specularReflectance;
+    elxTexture *m_specularReflectance;
     elxSpectrum m_eta;
     elxSpectrum m_k;
 
@@ -17,7 +17,7 @@ protected:
     Vec3f reflect(const Vec3f &wi) const;
 
 public:
-    elxConductor(const elxSpectrum &reflectance, std::string metal);
+    elxConductor(elxTexture *reflectance, std::string metal);
 
     virtual elxSpectrum sample(elxBSDFSamplingRecord &bRec, const Point2f &sample) const;
 

@@ -45,6 +45,8 @@ public:
 
     virtual Vec3f getNormal(const elxRay &ray, const Point3f &hit, const Vec3f &nDir) const=0;
 
+    virtual Point2f getUV(const Point3f &hit) const=0;
+    
     virtual std::string toString() const=0;
 protected:
     Shape() { }
@@ -69,6 +71,8 @@ public:
 
     virtual Vec3f getNormal(const elxRay &ray, const Point3f &hit, const Vec3f &nDir) const;
 
+    virtual Point2f getUV(const Point3f &hit) const;
+
     virtual std::string toString() const;
 
 protected:
@@ -90,6 +94,8 @@ public:
     virtual float area() const;
 
     virtual Vec3f getNormal(const elxRay &ray, const Point3f &hit, const Vec3f &nDir) const;
+
+    virtual Point2f getUV(const Point3f &hit) const;
 
     virtual std::string toString() const;
 
@@ -117,6 +123,8 @@ public:
     virtual float area() const;
 
     virtual Vec3f getNormal(const elxRay &ray, const Point3f &hit, const Vec3f &nDir) const;
+
+    virtual Point2f getUV(const Point3f &hit) const;
 
     virtual std::string toString() const;
 

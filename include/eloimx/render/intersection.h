@@ -21,19 +21,22 @@ struct elxIntersection {
 
     Point2f uv; // uv coordinate of hit point on the surface
 
-    //Vector2f dpdu, dpdv;
+    //Vec3f dpdu, dpdv; // position partials
 
+    float dudx, dudy, dvdx, dvdy;
     //float time;
 
     //Spectrum color; Interpolated vertex color
 
     Vec3f wi;   // incident direction in the local shading frame
 
-    //bool haveUVPartials;
+    bool haveUVPartials;
 
     elxIntersection(){
         shape = nullptr;
         t = std::numeric_limits<float>::infinity();
+        haveUVPartials = false;
+        dudx = dudy = dvdx = dvdy = .0f;
     }
 
     inline bool isValid() const {

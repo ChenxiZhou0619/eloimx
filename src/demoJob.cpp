@@ -7,6 +7,8 @@
 #include <eloimx/bsdfs/dielectric.h>
 #include <eloimx/bsdfs/mirror.h>
 #include <eloimx/bsdfs/conductor.h>
+#include <eloimx/texture/bitmap.h>
+#include <eloimx/texture/constmap.h>
 #define INTEGRATE_DEBUG
 #ifndef INTEGRATE_DEBUG
 #define SINGLE_DEBUG
@@ -21,7 +23,7 @@ void test() {
     }
     */
 #ifdef INTEGRATE_DEBUG
-    elxRenderJob job("cornellBox_100spp_10maxPath_copper.tga", 400, 400, 100);
+    elxRenderJob job("cornellBox_32spp_10maxPath_All_800x800.tga", 800, 800, 32);
     elxMCIntegrator *integrator = new elxPathTracer(10, 1, true, false);
     elxCameraInterface *sensor = new elxPerspectiveCamera();
     RTCDevice device = rtcNewDevice(nullptr);
@@ -35,22 +37,24 @@ void test() {
         Point3f(1.5, 1.5, 3),
         Point3f(1.5, 1.5, 1)
     );
-    elxBSDF *red = new elxDiffuse(elxSpectrum(1.0f, 0.5f, 0.5f));
+    elxBSDF *red = new elxDiffuse(new elxConstMap(elxSpectrum(1.0f, 0.5f, 0.5f)));
     leftRec->setBSDF(red);
     scene->attachGeometry(leftRec);
 
     /*----------------- back --------------------------*/
     elxRectangle *backRec = new elxRectangle(
         device,
-        Point3f(1.5, -1.5, 3),
-        Point3f(-1.5, -1.5, 3),
+        Point3f(1.5, 1.5, 3),
         Point3f(-1.5, 1.5, 3),
-        Point3f(1.5, 1.5, 3)
+        Point3f(-1.5, -1.5, 3),
+        Point3f(1.5, -1.5, 3)
     );
-    elxBSDF *green = new elxDiffuse(elxSpectrum(.5f, 1.0f, .5f));
-    backRec->setBSDF(green);
+    std::string filepath = "D:\\myEmbreeProject\\ayaka.jpg";
+    elxTexture *ayaka = new elxBitMap(filepath);
+    elxBSDF *white = new elxDiffuse(ayaka);
+    backRec->setBSDF(white);
     scene->attachGeometry(backRec);
-
+    
     /*----------------- right --------------------------*/
     elxRectangle *rightRec = new elxRectangle(
         device,
@@ -59,7 +63,7 @@ void test() {
         Point3f(-1.5, 1.5, 1),
         Point3f(-1.5, -1.5, 1)
     );
-    elxBSDF *blue = new elxDiffuse(elxSpectrum(.5f, .5f, 1.f));
+    elxBSDF *blue = new elxDiffuse(new elxConstMap(elxSpectrum(.5f, .5f, 1.f)));
     rightRec->setBSDF(blue);
     scene->attachGeometry(rightRec);
 
@@ -71,8 +75,8 @@ void test() {
         Point3f(-1.5, -1.5, 3),
         Point3f(-1.5, -1.5, 1)
     );
-    elxBSDF *white = new elxDiffuse(elxSpectrum(1.f, 1.f, 1.f));
-    downRec->setBSDF(white);
+    elxBSDF *green = new elxDiffuse(new elxConstMap(elxSpectrum(.5f, 1.0f, .5f)));
+    downRec->setBSDF(green);
     scene->attachGeometry(downRec);
 
     /*--------------- up -------------------------*/
@@ -83,42 +87,9 @@ void test() {
         Point3f(-1.5, 1.5, 3),
         Point3f(1.5, 1.5, 3)
     );
-    elxBSDF *black = new elxDiffuse(elxSpectrum(.3f));
+    elxBSDF *black = new elxDiffuse(new elxConstMap(elxSpectrum(.3f)));
     upRec->setBSDF(black);
     scene->attachGeometry(upRec);
-
-    /*--------------- sphere1 ---------------------*/
-    elxSphere *sph1 = new elxSphere(
-        device,
-        Point3f(1.0f, -1.1, 2),
-        .4f
-    );
-    elxBSDF *water1 = new elxDielectric(elxSpectrum(1.0f), elxSpectrum(1.0f), 1.33);
-    sph1->setBSDF(water1);
-    scene->attachGeometry(sph1);
-
-    /*---------------- sphere2 --------------------*/
-    elxSphere *sph2 = new elxSphere(
-        device,
-        Point3f(-0.5f, -0.5, 2),
-        1.f
-    );
-    
-    //elxBSDF *sphereRed = new elxDiffuse(elxSpectrum(0.7f, 0.4f, 0.4f));
-    elxBSDF *copper = new elxConductor(elxSpectrum(1.f), "Copper");
-    sph2->setBSDF(copper);
-    scene->attachGeometry(sph2);
-
-    /*--------------- sphere3 ---------------------*/
-    elxSphere *sph3 = new elxSphere(
-        device,
-        Point3f(0.3f, -1.2, 1.25),
-        .25f
-    );
-    elxBSDF *water2 = new elxDielectric(elxSpectrum(1.0f), elxSpectrum(1.0f), 1.5);
-    sph3->setBSDF(water2);
-    scene->attachGeometry(sph3);
-
 
     /*--------------- light source -------------------------*/
     elxRectangle *light = new elxRectangle(
@@ -132,11 +103,51 @@ void test() {
     light->boundEmitter(emitter);
     scene->attachGeometry(light);
 
+    /*---------------- sphere1 -----------------------------*/
+    elxSphere *sph1 = new elxSphere(
+        device,
+        Point3f(1.1, -1.3, 2),
+        0.2
+    );
+    elxBSDF *copper = new elxConductor(
+        new elxConstMap(elxSpectrum(1.f)),
+        "Copper"
+    );
+    sph1->setBSDF(copper);
+    scene->attachGeometry(sph1);
+
+    /*------------------ sphere2 ---------------------------*/
+    elxSphere *sph2 = new elxSphere(
+        device,
+        Point3f(-0.8, -1.1, 1.9),
+        0.4
+    );
+    elxBSDF *water = new elxDielectric(
+        new elxConstMap(elxSpectrum(1.f)),
+        new elxConstMap(elxSpectrum(1.f)),
+        1.33
+    );
+    sph2->setBSDF(water);
+    scene->attachGeometry(sph2);
+
+    /*--------------------- sphere3 -----------------------*/
+    elxSphere *sph3 = new elxSphere(
+        device,
+        Point3f(0.3, -1.2, 1.5),
+        0.3
+    );
+    elxBSDF *mirror = new elxMirror(
+        new elxConstMap(elxSpectrum(1.f))
+    );
+    sph3->setBSDF(mirror);
+    scene->attachGeometry(sph3);
+
     scene->commitScene();
     integrator->render(scene, &job, sensor);
+
 #endif
 #ifdef SINGLE_DEBUG
-    elxRenderJob job("cornellBox_200spp_10maxPath_mirror.tga", 400, 400, 200);
+    elxRenderJob job("cornellBox_32spp_10maxPath_texture_test5.tga", 400, 400, 32);
     elxMCIntegrator *integrator = new elxPathTracer(10, 1, true, false);
     elxCameraInterface *sensor = new elxPerspectiveCamera();
     RTCDevice device = rtcNewDevice(nullptr);
@@ -150,22 +161,24 @@ void test() {
         Point3f(1.5, 1.5, 3),
         Point3f(1.5, 1.5, 1)
     );
-    elxBSDF *mirror1 = new elxMirror(elxSpectrum(1.0f, 1.0f, 1.0f));
-    leftRec->setBSDF(mirror1);
+    elxBSDF *red = new elxDiffuse(new elxConstMap(elxSpectrum(1.0f, 0.5f, 0.5f)));
+    leftRec->setBSDF(red);
     scene->attachGeometry(leftRec);
 
     /*----------------- back --------------------------*/
     elxRectangle *backRec = new elxRectangle(
         device,
-        Point3f(1.5, -1.5, 3),
-        Point3f(-1.5, -1.5, 3),
+        Point3f(1.5, 1.5, 3),
         Point3f(-1.5, 1.5, 3),
-        Point3f(1.5, 1.5, 3)
+        Point3f(-1.5, -1.5, 3),
+        Point3f(1.5, -1.5, 3)
     );
-    elxBSDF *green = new elxDiffuse(elxSpectrum(.5f, 1.0f, .5f));
-    backRec->setBSDF(green);
+    std::string filepath = "D:\\myEmbreeProject\\ayaka.jpg";
+    elxTexture *ayaka = new elxBitMap(filepath);
+    elxBSDF *white = new elxDiffuse(ayaka);
+    backRec->setBSDF(white);
     scene->attachGeometry(backRec);
-
+    
     /*----------------- right --------------------------*/
     elxRectangle *rightRec = new elxRectangle(
         device,
@@ -174,8 +187,8 @@ void test() {
         Point3f(-1.5, 1.5, 1),
         Point3f(-1.5, -1.5, 1)
     );
-    elxBSDF *mirror2 = new elxMirror(elxSpectrum(1.f, 1.f, 1.f));
-    rightRec->setBSDF(mirror2);
+    elxBSDF *blue = new elxDiffuse(new elxConstMap(elxSpectrum(.5f, .5f, 1.f)));
+    rightRec->setBSDF(blue);
     scene->attachGeometry(rightRec);
 
     /*----------------- down --------------------------*/
@@ -186,8 +199,8 @@ void test() {
         Point3f(-1.5, -1.5, 3),
         Point3f(-1.5, -1.5, 1)
     );
-    elxBSDF *white = new elxDiffuse(elxSpectrum(1.f, 1.f, 1.f));
-    downRec->setBSDF(white);
+    elxBSDF *green = new elxDiffuse(new elxConstMap(elxSpectrum(.5f, 1.0f, .5f)));
+    downRec->setBSDF(green);
     scene->attachGeometry(downRec);
 
     /*--------------- up -------------------------*/
@@ -198,40 +211,9 @@ void test() {
         Point3f(-1.5, 1.5, 3),
         Point3f(1.5, 1.5, 3)
     );
-    elxBSDF *black = new elxDiffuse(elxSpectrum(.3f));
+    elxBSDF *black = new elxDiffuse(new elxConstMap(elxSpectrum(.3f)));
     upRec->setBSDF(black);
     scene->attachGeometry(upRec);
-
-    /*
-
-    elxSphere *sph1 = new elxSphere(
-        device,
-        Point3f(1.0f, -1.1, 2),
-        .4f
-    );
-    elxBSDF *water1 = new elxDielectric(elxSpectrum(1.0f), elxSpectrum(1.0f), 1.33);
-    sph1->setBSDF(water1);
-    scene->attachGeometry(sph1);
-
-    elxSphere *sph2 = new elxSphere(
-        device,
-        Point3f(-0.5f, -0.5, 2),
-        1.f
-    );
-    
-    elxBSDF *sphereRed = new elxDiffuse(elxSpectrum(0.7f, 0.4f, 0.4f));
-    sph2->setBSDF(sphereRed);
-    scene->attachGeometry(sph2);
-
-    elxSphere *sph3 = new elxSphere(
-        device,
-        Point3f(0.3f, -1.2, 1.25),
-        .25f
-    );
-    elxBSDF *water2 = new elxDielectric(elxSpectrum(1.0f), elxSpectrum(1.0f), 1.5);
-    sph3->setBSDF(water2);
-    scene->attachGeometry(sph3);
-    */
 
     /*--------------- light source -------------------------*/
     elxRectangle *light = new elxRectangle(
@@ -247,5 +229,6 @@ void test() {
 
     scene->commitScene();
     integrator->render(scene, &job, sensor);
+
 #endif
 }

@@ -13,7 +13,7 @@ std::unordered_map<std::string, elxSpectrum> elxConductor::kMap = {
     {"Copper", elxSpectrum(3.4059, 2.4886, 2.2880)}
 };
 
-elxConductor::elxConductor(const elxSpectrum &reflectance, std::string metal) {
+elxConductor::elxConductor(elxTexture *reflectance, std::string metal) {
     std::unordered_map<std::string, elxSpectrum>::iterator it_eta = 
         etaMap.find(metal);
     std::unordered_map<std::string, elxSpectrum>::iterator it_k = 
@@ -50,7 +50,7 @@ elxSpectrum elxConductor::sample(elxBSDFSamplingRecord &bRec, const Point2f &sam
     bRec.eta = 1.f;
     pdf = 1.f;
 
-    return m_specularReflectance * 
+    return m_specularReflectance->eval(*bRec.itsPtr, true) * 
             fresnelConductorExact(elxFrame::cosTheta(bRec.wi), m_eta, m_k);
 }
 
@@ -59,7 +59,7 @@ elxSpectrum elxConductor::eval(const elxBSDFSamplingRecord &bRec) const {
         elxFrame::cosTheta(bRec.wo) <= 0 ||
         std::abs(glm::dot(reflect(bRec.wi), bRec.wo)-1) > Epsilon)
         return elxSpectrum(.0f);
-    return m_specularReflectance *
+    return m_specularReflectance->eval(*bRec.itsPtr, true) *
             fresnelConductorExact(elxFrame::cosTheta(bRec.wi), m_eta, m_k);
 }
 
@@ -72,10 +72,10 @@ float elxConductor::pdf(const elxBSDFSamplingRecord &bRec) const {
 }
 
 std::string elxConductor::toString() const {
-    return fmt::format("Here is a conductor:\n eta=[{}, {}, {}]\n k=[{}, {}, {}]\n reflectance=[{}, {}, {}]",
+    return fmt::format("Here is a conductor:\n eta=[{}, {}, {}]\n k=[{}, {}, {}]\n reflectance = {}",
         m_eta.r, m_eta.g, m_eta.b,
         m_k.r, m_k.g, m_k.b,
-        m_specularReflectance.r, m_specularReflectance.g, m_specularReflectance.b);
+        m_specularReflectance->toString());
 }
 
 ELX_NAMESPACE_END

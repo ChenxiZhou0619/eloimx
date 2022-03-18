@@ -5,14 +5,14 @@
 ELX_NAMESPACE_BEGIN
 
 class elxMirror : public elxBSDF {
-    elxSpectrum m_specularReflectance;
+    elxTexture *m_specularReflectance;
 
     elxMirror() { }
 protected:
     Vec3f reflect(const Vec3f &wi) const;
 
 public:
-    elxMirror(const elxSpectrum &reflectance) : m_specularReflectance(reflectance) { }
+    elxMirror(elxTexture *specularReflectance) : m_specularReflectance(specularReflectance) { }
 
     virtual elxSpectrum sample(elxBSDFSamplingRecord &bRec, const Point2f &sample) const;
 

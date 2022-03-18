@@ -276,6 +276,8 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClCompile Include="D:\myEmbreeProject\project_PathTracer\src\bsdfs\dielectric.cpp" />
     <ClCompile Include="D:\myEmbreeProject\project_PathTracer\src\bsdfs\mirror.cpp" />
     <ClCompile Include="D:\myEmbreeProject\project_PathTracer\src\bsdfs\conductor.cpp" />
+    <ClCompile Include="D:\myEmbreeProject\project_PathTracer\src\texture\bitmap.cpp" />
+    <ClCompile Include="D:\myEmbreeProject\project_PathTracer\src\texture\constmap.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="D:\myEmbreeProject\project_PathTracer\build\ZERO_CHECK.vcxproj">

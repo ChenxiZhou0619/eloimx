@@ -19,11 +19,11 @@ elxSpectrum elxMirror::sample(elxBSDFSamplingRecord &bRec, const Point2f &sample
     bRec.wo = reflect(bRec.wi);
     bRec.eta = 1.0f;
     pdf = 1.f;
-    return m_specularReflectance;
+    return m_specularReflectance->eval(*bRec.itsPtr, true);
 }
 
 elxSpectrum elxMirror::eval(const elxBSDFSamplingRecord &bRec) const {
-    return m_specularReflectance;
+    return m_specularReflectance->eval(*bRec.itsPtr, true);
 }
 
 float elxMirror::pdf(const elxBSDFSamplingRecord &bRec) const {
@@ -31,8 +31,8 @@ float elxMirror::pdf(const elxBSDFSamplingRecord &bRec) const {
 }
 
 std::string elxMirror::toString() const {
-    return fmt::format("Here is a mirror:\n specularReflectance[{}, {}, {}]",
-        m_specularReflectance.r, m_specularReflectance.g, m_specularReflectance.b);
+    return fmt::format("Here is a mirror:\n specularReflectance is {}",
+        m_specularReflectance->toString());
 }
 
 ELX_NAMESPACE_END
