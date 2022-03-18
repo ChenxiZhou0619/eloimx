@@ -2,9 +2,6 @@
 
 ELX_NAMESPACE_BEGIN
 
-ELX_NAMESPACE_END
-
-
 /*
     the Fresnel reflectance is the average of the squares of the
         parallel and perpendicular polarization terms
@@ -39,3 +36,26 @@ float fresnelDieletricExt(float cosThetaI_,
 
     return .5f * (rPrl * rPrl + rPpd * rPpd);
 }
+
+elxSpectrum fresnelConductorExact(float cosThetaI,
+    const elxSpectrum &eta, const elxSpectrum &k) {
+    
+    float cosThetaI2 = cosThetaI * cosThetaI,
+          sinThetaI2 = 1 - cosThetaI2,
+          sinThetaI4 = sinThetaI2 * sinThetaI2;
+
+    elxSpectrum temp1 = eta*eta - k*k - elxSpectrum(sinThetaI2),
+                a2pb2 = (temp1*temp1 + k*k*eta*eta*4).safe_sqrt(),
+                a     = ((a2pb2 + temp1) * 0.5f).safe_sqrt();
+    elxSpectrum term1 = a2pb2 + elxSpectrum(cosThetaI2),
+                term2 = a * (2 * cosThetaI);
+    elxSpectrum rPpd = (term1 - term2) / (term1 + term2);
+
+    elxSpectrum term3 = a2pb2*cosThetaI2 + elxSpectrum(sinThetaI4),
+                term4 = term2 * sinThetaI2;
+    elxSpectrum rPrl = rPpd * (term3 - term4)/(term3 + term4);
+
+    return (rPrl + rPpd) * 0.5f;
+}
+
+ELX_NAMESPACE_END

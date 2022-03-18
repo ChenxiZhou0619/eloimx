@@ -1,6 +1,7 @@
 #pragma once
 #include <eloimx/eloimx.h>
 
+ELX_NAMESPACE_BEGIN
 /*
     cosThetaI : Cosine of the angle between the normal and the incident ray
         (may be negative)
@@ -10,3 +11,10 @@
 */
 float fresnelDieletricExt(float cosThetaI, 
     float &cosThetaT, float eta);
+
+struct elxSpectrum;
+
+elxSpectrum fresnelConductorExact(float cosThetaI,
+    const elxSpectrum &eta, const elxSpectrum &k);
+
+ELX_NAMESPACE_END

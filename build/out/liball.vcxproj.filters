@@ -55,6 +55,12 @@
     <ClCompile Include="D:\myEmbreeProject\project_PathTracer\src\bsdfs\dielectric.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="D:\myEmbreeProject\project_PathTracer\src\bsdfs\mirror.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\myEmbreeProject\project_PathTracer\src\bsdfs\conductor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="D:\myEmbreeProject\project_PathTracer\src\CMakeLists.txt" />

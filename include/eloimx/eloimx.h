@@ -22,6 +22,7 @@
 #include <eloimx/core/spectrum.h>
 #include <eloimx/core/frame.h>
 #include <eloimx/core/warp.h>
+#include <eloimx/core/util.h>
 /*
     eloim render header files
 */

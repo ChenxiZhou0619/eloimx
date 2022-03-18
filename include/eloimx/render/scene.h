@@ -73,7 +73,7 @@ public:
 
     elxSpectrum evalEnv(const elxRay &ray) const {
         // hack: return a const value
-        return elxSpectrum(.7f);
+        return elxSpectrum(.5f);
     }
 
     elxSpectrum sampleEmitterDirect(elxDirectSamplingRecord &dRec,

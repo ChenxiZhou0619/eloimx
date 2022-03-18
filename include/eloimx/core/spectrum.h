@@ -45,12 +45,34 @@ struct elxSpectrum {
         return *this;
     }
 
+    elxSpectrum operator/(const elxSpectrum &spc) const {
+        return elxSpectrum(
+            r/spc.r,
+            g/spc.g,
+            b/spc.b
+        );
+    }
+
+    elxSpectrum& operator/=(const elxSpectrum &spc) {
+        *this = *this/spc;
+        return *this;
+    }
+
     elxSpectrum operator*(const elxSpectrum &spc) const {
         return elxSpectrum(r*spc.r, g*spc.g, b*spc.b);
     }
 
     elxSpectrum& operator*=(const elxSpectrum &spc) {
         r *= spc.r; g *= spc.g; b *= spc.b;
+        return *this;
+    }
+
+    elxSpectrum operator-(const elxSpectrum &spc) const {
+        return elxSpectrum(r-spc.r, g-spc.g, b-spc.b);
+    }
+
+    elxSpectrum& operator-=(const elxSpectrum &spc) {
+        *this = *this - spc;
         return *this;
     }
 
@@ -68,6 +90,14 @@ struct elxSpectrum {
 
     float max() const {
         return std::max(std::max(r, g), b);
+    }
+
+    elxSpectrum safe_sqrt() const {
+        return elxSpectrum(
+            std::sqrt(r),
+            std::sqrt(g),
+            std::sqrt(b)
+        );
     }
 
     std::string toString() const;
