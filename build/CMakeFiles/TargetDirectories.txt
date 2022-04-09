@@ -1,7 +1,0 @@
-/home/zcx/graphics/eloimx/build/CMakeFiles/edit_cache.dir
-/home/zcx/graphics/eloimx/build/CMakeFiles/rebuild_cache.dir
-/home/zcx/graphics/eloimx/build/out/CMakeFiles/liball.dir
-/home/zcx/graphics/eloimx/build/out/CMakeFiles/demoJob.dir
-/home/zcx/graphics/eloimx/build/out/CMakeFiles/eloimx.dir
-/home/zcx/graphics/eloimx/build/out/CMakeFiles/edit_cache.dir
-/home/zcx/graphics/eloimx/build/out/CMakeFiles/rebuild_cache.dir
