@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/eloimx.dir/main.cpp.o -o eloimx   -L/home/zcx/graphics/eloimx/src/../lib  -Wl,-rpath,/home/zcx/graphics/eloimx/src/../lib libdemoJob.a libliball.a -lfmt -lembree3 

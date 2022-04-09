@@ -49,9 +49,9 @@ void test() {
         Point3f(-1.5, -1.5, 3),
         Point3f(1.5, -1.5, 3)
     );
-    std::string filepath = "D:\\myEmbreeProject\\ayaka.jpg";
-    elxTexture *ayaka = new elxBitMap(filepath);
-    elxBSDF *white = new elxDiffuse(ayaka);
+    //std::string filepath = "D:\\myEmbreeProject\\ayaka.jpg";
+    //elxTexture *ayaka = new elxBitMap(filepath);
+    elxBSDF *white = new elxDiffuse(new elxConstMap(elxSpectrum(1.0f, 1.0f, 1.0f)));
     backRec->setBSDF(white);
     scene->attachGeometry(backRec);
     

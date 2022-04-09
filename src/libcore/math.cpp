@@ -10,6 +10,7 @@ void normalize(Vec3f &v) {
 }
 
 float vecLen(const Vec3f &v) {
-    return std::sqrtf(v.x*v.x + v.y*v.y + v.z*v.z);
+    return sqrtf(v.x*v.x + v.y*v.y + v.z*v.z);
+
 }
 ELX_NAMESPACE_END
