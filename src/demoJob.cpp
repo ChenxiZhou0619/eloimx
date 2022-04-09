@@ -23,7 +23,7 @@ void test() {
     }
     */
 #ifdef INTEGRATE_DEBUG
-    elxRenderJob job("cornellBox_32spp_10maxPath_All_800x800.tga", 800, 800, 32);
+    elxRenderJob job("cornellBox_16spp_10maxPath_All_400x400.tga", 400, 400, 16);
     elxMCIntegrator *integrator = new elxPathTracer(10, 1, true, false);
     elxCameraInterface *sensor = new elxPerspectiveCamera();
     RTCDevice device = rtcNewDevice(nullptr);
