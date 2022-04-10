@@ -1,2 +1,0 @@
-/usr/bin/ar qc libtexture.a CMakeFiles/texture.dir/bitmap.cpp.o CMakeFiles/texture.dir/constmap.cpp.o
-/usr/bin/ranlib libtexture.a
