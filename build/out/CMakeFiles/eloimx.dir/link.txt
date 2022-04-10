@@ -1,0 +1,1 @@
+/usr/bin/c++  -std=c++11 CMakeFiles/eloimx.dir/main.cpp.o -o eloimx   -L/home/zcx/graphics/eloimx/lib/Linux  -Wl,-rpath,/home/zcx/graphics/eloimx/lib/Linux libdemoJob.a bsdfs/libbsdfs.a integrators/libintegrators.a texture/libtexture.a render/librender.a core/libcore.a -lembree3 -lfmt 

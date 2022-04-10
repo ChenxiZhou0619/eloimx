@@ -1,0 +1,2 @@
+/usr/bin/ar qc libcore.a CMakeFiles/core.dir/frame.cpp.o CMakeFiles/core.dir/math.cpp.o CMakeFiles/core.dir/ray.cpp.o CMakeFiles/core.dir/spectrum.cpp.o CMakeFiles/core.dir/util.cpp.o CMakeFiles/core.dir/warp.cpp.o
+/usr/bin/ranlib libcore.a

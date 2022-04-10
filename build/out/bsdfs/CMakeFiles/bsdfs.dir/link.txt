@@ -1,0 +1,2 @@
+/usr/bin/ar qc libbsdfs.a CMakeFiles/bsdfs.dir/conductor.cpp.o CMakeFiles/bsdfs.dir/dielectric.cpp.o CMakeFiles/bsdfs.dir/diffuse.cpp.o CMakeFiles/bsdfs.dir/mirror.cpp.o
+/usr/bin/ranlib libbsdfs.a

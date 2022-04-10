@@ -9,7 +9,7 @@
 #include <eloimx/bsdfs/conductor.h>
 #include <eloimx/texture/bitmap.h>
 #include <eloimx/texture/constmap.h>
-//#define INTEGRATE_DEBUG
+#define INTEGRATE_DEBUG
 #ifndef INTEGRATE_DEBUG
 #define SINGLE_DEBUG
 #endif
@@ -23,7 +23,7 @@ void test() {
     }
     */
 #ifdef INTEGRATE_DEBUG
-    elxRenderJob job("cornellBox_100spp_10maxPath_All_400x400.tga", 400, 400, 100);
+    elxRenderJob job("cornell_0410_1.tga", 512, 512, 64);
     elxMCIntegrator *integrator = new elxPathTracer(10, 1, true, false);
     elxCameraInterface *sensor = new elxPerspectiveCamera();
     RTCDevice device = rtcNewDevice(nullptr);
@@ -49,12 +49,12 @@ void test() {
         Point3f(-1.5, -1.5, 3),
         Point3f(1.5, -1.5, 3)
     );
-    //std::string filepath = "D:\\myEmbreeProject\\ayaka.jpg";
-    //elxTexture *ayaka = new elxBitMap(filepath);
-    std::string filepath = "../../asset/normal_map.jpg";
-    elxTexture *normalMap = new elxBitMap(filepath);
+   std::string filepath1 = "../../asset/normal_map2.jpg";
+    elxTexture *normalMap = new elxBitMap(filepath1);
+    std::string filepath2 = "../../asset/stones.jpg";
+    elxTexture *colorMap = new elxBitMap(filepath2);
     backRec->setNormalMap(normalMap);
-    elxBSDF *white = new elxDiffuse(new elxConstMap(elxSpectrum(1.0f, 1.0f, 1.0f)));
+    elxBSDF *white = new elxDiffuse(colorMap);
     backRec->setBSDF(white);
     scene->attachGeometry(backRec);
     
