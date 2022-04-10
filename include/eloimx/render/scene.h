@@ -64,10 +64,17 @@ public:
                                     rayhit.hit.Ng_y,
                                     rayhit.hit.Ng_z);
             geoNormal = its.shape->getNormal(ray, its.p, geoNormal);
-
-            its.shFrame = its.geoFrame = elxFrame(geoNormal);
-            its.wi = its.shFrame.toLocal(-ray.d);
             its.uv = its.shape->getUV(its.p);
+            its.geoFrame = elxFrame(geoNormal);
+            if (its.shape->hasNormalMap()){
+                Vec3f shNormal = its.shape->getShNormal(its.uv);
+                shNormal = its.geoFrame.toWorld(shNormal);
+                its.shFrame = elxFrame(shNormal);
+            } else {
+                its.shFrame = its.geoFrame;
+            }
+            its.wi = its.shFrame.toLocal(-ray.d);
+
             // no ray differentials currently
             its.haveUVPartials = false;
         }

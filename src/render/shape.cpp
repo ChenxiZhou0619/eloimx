@@ -9,6 +9,14 @@ void Shape::boundEmitter(elxEmitter *emitter){
     emitter->m_shape = this;
 }
 
+Vec3f Shape::getShNormal(const Point2f& uv) const {
+    if (this->normalMap == nullptr) {
+        return Vec3f(.0f, 1.0f, .0f);
+    }
+    elxSpectrum shNormal = this->normalMap->eval(uv);// - elxSpectrum(.5f);
+    return Vec3f(shNormal.r, shNormal.b, shNormal.g);
+}
+
 elxTriangle::elxTriangle(RTCDevice device,
                  const Point3f &p1,
                  const Point3f &p2,
@@ -46,6 +54,7 @@ elxTriangle::elxTriangle(RTCDevice device,
         emitter = nullptr;
         bsdf    = nullptr;
         geomID  = RTC_INVALID_GEOMETRY_ID;
+        normalMap = nullptr;
 }
 
 void elxTriangle::samplePosition(elxDirectSamplingRecord &dRec, const Point2f &sample) const {
@@ -155,6 +164,7 @@ elxRectangle::elxRectangle(RTCDevice device,
     emitter = nullptr;
     bsdf    = nullptr;
     geomID  = RTC_INVALID_GEOMETRY_ID;
+    normalMap = nullptr;
 }
 
 void elxRectangle::samplePosition(elxDirectSamplingRecord &dRec, const Point2f &sample) const {
@@ -358,8 +368,9 @@ elxSphere::elxSphere(RTCDevice device, const Point3f &c, const float &r):center(
     rtcCommitGeometry(shapePtr);
 
     emitter = nullptr;
-    emitter = nullptr;
+    bsdf = nullptr;
     geomID  = RTC_INVALID_GEOMETRY_ID;
+    normalMap = nullptr;
 }
 
 // todo

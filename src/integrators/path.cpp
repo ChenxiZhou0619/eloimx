@@ -101,8 +101,8 @@ elxSpectrum elxPathTracer::Li(const elxRay &r,
         Vec3f wo = its.toWorld(bRec.wo);
         float woDotGeoN = glm::dot(its.geoFrame.Yprime, wo);
         if(m_strictNormals && woDotGeoN * elxFrame::cosTheta(bRec.wo) <= 0){
-            std::cout<<"wo : ("<<bRec.wo.x<<", "<<bRec.wo.y<<", "<<bRec.wo.z<<")\n";
-            std::cout<<"break up to light leak\n";
+            //std::cout<<"wo : ("<<bRec.wo.x<<", "<<bRec.wo.y<<", "<<bRec.wo.z<<")\n";
+            //std::cout<<"break up to light leak\n";
             break;
         }
 

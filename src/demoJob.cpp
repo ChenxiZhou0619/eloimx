@@ -9,7 +9,7 @@
 #include <eloimx/bsdfs/conductor.h>
 #include <eloimx/texture/bitmap.h>
 #include <eloimx/texture/constmap.h>
-#define INTEGRATE_DEBUG
+//#define INTEGRATE_DEBUG
 #ifndef INTEGRATE_DEBUG
 #define SINGLE_DEBUG
 #endif
@@ -23,7 +23,7 @@ void test() {
     }
     */
 #ifdef INTEGRATE_DEBUG
-    elxRenderJob job("cornellBox_16spp_10maxPath_All_400x400.tga", 400, 400, 16);
+    elxRenderJob job("cornellBox_100spp_10maxPath_All_400x400.tga", 400, 400, 100);
     elxMCIntegrator *integrator = new elxPathTracer(10, 1, true, false);
     elxCameraInterface *sensor = new elxPerspectiveCamera();
     RTCDevice device = rtcNewDevice(nullptr);
@@ -51,6 +51,9 @@ void test() {
     );
     //std::string filepath = "D:\\myEmbreeProject\\ayaka.jpg";
     //elxTexture *ayaka = new elxBitMap(filepath);
+    std::string filepath = "../../asset/normal_map.jpg";
+    elxTexture *normalMap = new elxBitMap(filepath);
+    backRec->setNormalMap(normalMap);
     elxBSDF *white = new elxDiffuse(new elxConstMap(elxSpectrum(1.0f, 1.0f, 1.0f)));
     backRec->setBSDF(white);
     scene->attachGeometry(backRec);
@@ -147,85 +150,28 @@ void test() {
 
 #endif
 #ifdef SINGLE_DEBUG
-    elxRenderJob job("cornellBox_32spp_10maxPath_texture_test5.tga", 400, 400, 32);
+    elxRenderJob job("normalMap_test8.tga", 512, 512, 64);
     elxMCIntegrator *integrator = new elxPathTracer(10, 1, true, false);
     elxCameraInterface *sensor = new elxPerspectiveCamera();
     RTCDevice device = rtcNewDevice(nullptr);
     elxScene* scene = new elxScene(device);
 
-    /*----------------- left -------------------------*/
-    elxRectangle *leftRec = new elxRectangle(
-        device,
-        Point3f(1.5, -1.5, 1),
-        Point3f(1.5, -1.5, 3),
-        Point3f(1.5, 1.5, 3),
-        Point3f(1.5, 1.5, 1)
-    );
-    elxBSDF *red = new elxDiffuse(new elxConstMap(elxSpectrum(1.0f, 0.5f, 0.5f)));
-    leftRec->setBSDF(red);
-    scene->attachGeometry(leftRec);
-
     /*----------------- back --------------------------*/
     elxRectangle *backRec = new elxRectangle(
         device,
-        Point3f(1.5, 1.5, 3),
-        Point3f(-1.5, 1.5, 3),
-        Point3f(-1.5, -1.5, 3),
-        Point3f(1.5, -1.5, 3)
+        Point3f(3, 3, 3),
+        Point3f(-3, 3, 3),
+        Point3f(-3, -3, 3),
+        Point3f(3, -3, 3)
     );
-    std::string filepath = "D:\\myEmbreeProject\\ayaka.jpg";
-    elxTexture *ayaka = new elxBitMap(filepath);
-    elxBSDF *white = new elxDiffuse(ayaka);
+    std::string filepath1 = "../../asset/normal_map2.jpg";
+    elxTexture *normalMap = new elxBitMap(filepath1);
+    std::string filepath2 = "../../asset/stones.jpg";
+    elxTexture *colorMap = new elxBitMap(filepath2);
+    //backRec->setNormalMap(normalMap);
+    elxBSDF *white = new elxDiffuse(colorMap);
     backRec->setBSDF(white);
     scene->attachGeometry(backRec);
-    
-    /*----------------- right --------------------------*/
-    elxRectangle *rightRec = new elxRectangle(
-        device,
-        Point3f(-1.5, -1.5, 3),
-        Point3f(-1.5, 1.5, 3),
-        Point3f(-1.5, 1.5, 1),
-        Point3f(-1.5, -1.5, 1)
-    );
-    elxBSDF *blue = new elxDiffuse(new elxConstMap(elxSpectrum(.5f, .5f, 1.f)));
-    rightRec->setBSDF(blue);
-    scene->attachGeometry(rightRec);
-
-    /*----------------- down --------------------------*/
-    elxRectangle *downRec = new elxRectangle(
-        device,
-        Point3f(1.5, -1.5, 1),
-        Point3f(1.5, -1.5, 3),
-        Point3f(-1.5, -1.5, 3),
-        Point3f(-1.5, -1.5, 1)
-    );
-    elxBSDF *green = new elxDiffuse(new elxConstMap(elxSpectrum(.5f, 1.0f, .5f)));
-    downRec->setBSDF(green);
-    scene->attachGeometry(downRec);
-
-    /*--------------- up -------------------------*/
-    elxRectangle *upRec = new elxRectangle(
-        device,
-        Point3f(1.5, 1.5, 1),
-        Point3f(-1.5, 1.5, 1),
-        Point3f(-1.5, 1.5, 3),
-        Point3f(1.5, 1.5, 3)
-    );
-    elxBSDF *black = new elxDiffuse(new elxConstMap(elxSpectrum(.3f)));
-    upRec->setBSDF(black);
-    scene->attachGeometry(upRec);
-
-    /*--------------- light source -------------------------*/
-    elxRectangle *light = new elxRectangle(
-        device,
-        Point3f(.5f, 1.4, 2),
-        Point3f(-.5f, 1.4, 2),
-        Point3f(-.5f, 1.4, 1.5),
-        Point3f(.5f, 1.4, 1.5)
-    );
-    elxEmitter *emitter = new elxAreaLight(elxSpectrum(1.f));
-    light->boundEmitter(emitter);
-    scene->attachGeometry(light);
 
     scene->commitScene();
     integrator->render(scene, &job, sensor);

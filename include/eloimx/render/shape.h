@@ -2,6 +2,7 @@
 #include <eloimx/eloimx.h>
 #include <embree3/rtcore.h>
 #include <fmt/format.h>
+#include <eloimx/render/texture.h>
 
 ELX_NAMESPACE_BEGIN
 class elxBSDF;
@@ -18,6 +19,16 @@ public:
     elxBSDF* getBSDF() const {
         return bsdf;
     }
+
+    void setNormalMap(elxTexture *normalMap) {
+        this->normalMap = normalMap;
+    }
+
+    bool hasNormalMap() const {
+        return normalMap != nullptr;
+    }
+
+    Vec3f getShNormal(const Point2f& uv) const;
 
     void boundEmitter(elxEmitter *emitter);
 
@@ -51,6 +62,7 @@ public:
 protected:
     Shape() { }
     elxBSDF *bsdf;
+    elxTexture *normalMap;
     elxEmitter *emitter;
     unsigned int geomID;
 };
