@@ -13,3 +13,5 @@ Currently support
 -   bsdf : conductor、dieletric
 -   texture : bitmap(with out mipmap)
 next: microfacet model
+## 2022.4.11
+embree3.dll and tbb12.dll in lib/Windows

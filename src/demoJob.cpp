@@ -9,6 +9,7 @@
 #include <eloimx/bsdfs/conductor.h>
 #include <eloimx/texture/bitmap.h>
 #include <eloimx/texture/constmap.h>
+#include <oidn/oidn.hpp>
 #define INTEGRATE_DEBUG
 #ifndef INTEGRATE_DEBUG
 #define SINGLE_DEBUG
