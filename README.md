@@ -15,3 +15,13 @@ Currently support
 next: microfacet model
 ## 2022.4.11
 embree3.dll and tbb12.dll in lib/Windows
+-   for release
+mkdir build
+cd build
+cmake .. -DCMAKE_BUILD_TYPE=Release
+cmake --build .
+-   for debug
+mkdir build
+cd build
+cmake .. -DCMAKE_BUILD_TYPE=Debug
+cmake --build .
